@@ -12,7 +12,7 @@ class FileController extends Controller
      */
     public function index()
     {
-        //
+        return view("File.index");
     }
 
     /**
@@ -28,7 +28,25 @@ class FileController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'file' => 'required|mimes:pdf,xlx,csv|max:2048',
+        ]);
+
+        $user = auth()->user();
+        $year = date('Y');
+        $month = date('m');
+        $day = date('d');
+
+        $directory = 'uploads/docs/' . $user->name . '/' . $year .'/'. $month .'/'. $day;
+
+        $originalName = $request->file->getClientOriginalName();
+        $safeName = preg_replace('/[^a-zA-Z0-9_\.\-]/', '_', $originalName);
+        $filePath = public_path($directory);
+
+        $request->file->move($filePath, $safeName);
+
+        return back()->with('success', 'File uploaded successfully!')
+            ->with('file', $safeName);
     }
 
     /**
