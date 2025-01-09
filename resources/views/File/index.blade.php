@@ -12,28 +12,47 @@
                 </div>
             @endsession
 
-            @error('file')
-                <div class="bg-red-300 rounded-md border-2 border-rose-500 my-2 p-4 text-rose-600">
-                    {{ $message }}
-                </div>
-            @enderror
-
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                 <form action="{{ route('file.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
                     <div class="mb-3">
-                        <label class="form-label" for="inputFile">File:</label>
-                        <input
-                            type="file"
+                        <x-input-label for="name" :value="__('Document Name')"/>
+                        <x-text-input
+                            type="text"
+                            id="name"
+                            class="block mt-1 w-full"
+                            required
+                        />
+                        <x-input-error :messages="$errors->get('name')" class="mt-2" />
+
+                        <x-input-label for="description" :value="__('Description')"/>
+                        <x-textarea-input
+                            name="description"
+                            id="description"
+                            class="block mt-1 w-full"
+                        />
+                        <x-input-error :messages="$errors->get('description')" class="mt-2" />
+
+                        <x-input-label
+                            for="inputFile"
+                            :value="__('Choose file')"
+                            class="my-3 px-3 py-2 max-w-72 bg-zinc-200 border-2 border-solid rounded-md border-zinc-800 color-zinc-800"
+                        />
+                        <x-file-input
                             name="file"
                             id="inputFile"
-                            class="form-control @error('file') is-invalid @enderror">
+                        />
 
                     </div>
 
                     <div class="mb-3">
-                        <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Upload</button>
+                        <button
+                            type="submit"
+                            class="my-3 px-3 py-2 max-w-72 bg-emerald-50 border-2 border-solid rounded-md border-emerald-900 color-emerald-900"
+                        >
+                            <i class="fa fa-save"></i> Upload
+                        </button>
                     </div>
 
                 </form>
