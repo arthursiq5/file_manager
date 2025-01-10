@@ -11,5 +11,6 @@ class File extends Model
         'description',
         'file_name',
         'path',
+        'user_id',
     ] ;
 }

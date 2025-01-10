@@ -18,7 +18,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/file', [FileController::class, 'index']);
+    Route::get('/file/{file}', [FileController::class, 'show'])->name('file.show');
     Route::post('/file', [FileController::class, 'store'])->name('file.store');
+    Route::get('/files/{file}/download', [FileController::class, 'download'])->name('files.download');
+    Route::delete('/files/{file}', [FileController::class, 'destroy'])->name('files.destroy');
 });
 
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\File;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class FileController extends Controller
@@ -12,7 +13,7 @@ class FileController extends Controller
      */
     public function index()
     {
-        $files = File::orderBy("created_at","desc")->paginate(10);
+        $files = File::orderBy('created_at', 'desc')->get();
 
         return view("File.index", compact("files"));
     }
@@ -45,10 +46,21 @@ class FileController extends Controller
         $safeName = preg_replace('/[^a-zA-Z0-9_\.\-]/', '_', $originalName);
         $filePath = public_path($directory);
 
+        if (file_exists($filePath . '/' . $safeName)) {
+            $safeName = pathinfo($safeName, PATHINFO_FILENAME) . '_' . time() . '.' . $request->file->extension();
+        }
+
         $request->file->move($filePath, $safeName);
 
-        return back()->with('success', 'File uploaded successfully!')
-            ->with('file', $safeName);
+        $file = new File();
+        $file->name = $request->name;
+        $file->description = $request->description;
+        $file->file_name = $safeName;
+        $file->path = $directory;
+        $file->user_id = $user->id;
+        $file->save();
+
+        return back()->with('success', 'File uploaded successfully!');
     }
 
     /**
@@ -56,7 +68,7 @@ class FileController extends Controller
      */
     public function show(File $file)
     {
-        //
+        return view('File.show', compact('file'));
     }
 
     /**
@@ -78,8 +90,27 @@ class FileController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(File $file)
+    public function destroy(File $file): RedirectResponse
     {
-        //
+        $filePath = public_path($file->folder . '/' . $file->file_name);
+
+        if (file_exists($filePath)) {
+            unlink($filePath);
+        }
+
+        $file->delete();
+
+        return back()->with('success', 'Arquivo excluído com sucesso.');
+    }
+
+    public function download(File $file)
+    {
+        $filePath = public_path($file->folder . '/' . $file->file_name);
+
+        if (!file_exists($filePath)) {
+            abort(404, 'Arquivo não encontrado.');
+        }
+
+        return response()->download($filePath, $file->file_name);
     }
 }

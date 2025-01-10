@@ -21,7 +21,10 @@
                         <x-text-input
                             type="text"
                             id="name"
+                            name="name"
                             class="block mt-1 w-full"
+                            min="3"
+                            max="128"
                             required
                         />
                         <x-input-error :messages="$errors->get('name')" class="mt-2" />
@@ -61,7 +64,7 @@
                 <p class="text-gray-500">Nenhum arquivo encontrado.</p>
             @else
                 <div class="overflow-x-auto">
-                    <table class="min-w-full border border-gray-300">
+                    <table class="min-w-full border border-gray-300 bg-white rounder-md">
                         <thead>
                             <tr class="bg-gray-100">
                                 <th class="py-2 px-4 text-left text-gray-600">Nome</th>
@@ -77,7 +80,7 @@
                                     <td class="py-2 px-4">{{ $file->name }}</td>
                                     <td class="py-2 px-4">{{ $file->description }}</td>
                                     <td class="py-2 px-4">
-                                        <a href="{{ asset($file->folder . '/' . $file->file_name) }}" target="_blank" class="text-blue-500 underline">
+                                        <a href="{{ route('file.show', $file->id) }}" class="text-blue-500 underline">
                                             {{ $file->file_name }}
                                         </a>
                                     </td>
