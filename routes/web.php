@@ -17,7 +17,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/file', [FileController::class, 'index']);
+    Route::get('/file', [FileController::class, 'index'])->name('file');
     Route::get('/file/{file}', [FileController::class, 'show'])->name('file.show');
     Route::post('/file', [FileController::class, 'store'])->name('file.store');
     Route::get('/files/{file}/download', [FileController::class, 'download'])->name('files.download');
