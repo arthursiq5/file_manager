@@ -13,4 +13,9 @@ class File extends Model
         'path',
         'user_id',
     ] ;
+
+    public function getPath():string
+    {
+        return $this->path . '/'. $this->file_name;
+    }
 }

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\File;
+use App\Utils\PDFAnalise;
+use App\Utils\PDFParserFacade;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -68,7 +70,8 @@ class FileController extends Controller
      */
     public function show(File $file)
     {
-        return view('File.show', compact('file'));
+        $summaryGemini = (new PDFAnalise($file))->analiseFirstPages();
+        return view('File.show', compact('file', 'summaryGemini'));
     }
 
     /**
