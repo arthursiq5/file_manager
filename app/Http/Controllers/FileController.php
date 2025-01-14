@@ -34,7 +34,7 @@ class FileController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'file' => 'required|mimes:pdf,xlx,csv|max:2048',
+            'file' => 'required|mimes:pdf,xlx,csv,epub,txt,text/plain|max:2048',
         ]);
 
         $user = auth()->user();

@@ -11,6 +11,11 @@
                     {{ $value }}
                 </div>
             @endsession
+            @session('error')
+                <div class="bg-red-300 rounded-md border-2 border-red-700 my-2 p-4 text-red-800">
+                    {{ $value }}
+                </div>
+            @endsession
 
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                 <form action="{{ route('file.store') }}" method="POST" enctype="multipart/form-data">

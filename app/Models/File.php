@@ -14,8 +14,14 @@ class File extends Model
         'user_id',
     ] ;
 
-    public function getPath():string
+    public function getPath(): string
     {
         return $this->path . '/'. $this->file_name;
+    }
+
+    public function getType(): string
+    {
+        $file_name = explode(".", $this->file_name);
+        return end($file_name);
     }
 }
